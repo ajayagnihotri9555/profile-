@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfileGuard - Fake Profile Detector</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <h1>ProfileGuard</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About</a>
+            <a href="how-it-works.html">How It Works</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="sign-in-btn">Sign In</button>
+            <button class="sign-up-btn">Sign Up</button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Detect Fake Social Media Profiles</h1>
+            <p>Protect yourself from online scams and fake accounts</p>
+            <div class="search-container">
+                <input type="text" id="profileUrl" placeholder="Enter profile URL to analyze...">
+                <button id="analyzeBtn">Analyze Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="results" class="results" style="display: none;">
+        <h2>Profile Analysis</h2>
+        <div class="profile-form">
+            <h3>Enter Profile Details</h3>
+            <form id="profileDetailsForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="profileName">Profile Name</label>
+                        <input type="text" id="profileName" placeholder="Enter profile name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileUsername">Username</label>
+                        <input type="text" id="profileUsername" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="followersCount">Followers Count</label>
+                        <input type="number" id="followersCount" placeholder="Enter followers count" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="followingCount">Following Count</label>
+                        <input type="number" id="followingCount" placeholder="Enter following count" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postsCount">Total Posts</label>
+                        <input type="number" id="postsCount" placeholder="Enter total posts" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="avgLikes">Average Likes per Post</label>
+                        <input type="number" id="avgLikes" placeholder="Enter average likes" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountAge">Account Age (in months)</label>
+                        <input type="number" id="accountAge" placeholder="Enter account age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="highlightsCount">Number of Highlights</label>
+                        <input type="number" id="highlightsCount" placeholder="Enter highlights count" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profileBio">Profile Bio</label>
+                    <textarea id="profileBio" placeholder="Enter profile bio" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profilePic">Profile Picture URL</label>
+                    <input type="url" id="profilePic" placeholder="Enter profile picture URL" required>
+                </div>
+                <button type="submit" class="submit-btn">Analyze Profile</button>
+            </form>
+        </div>
+        <div class="result-card" style="display: none;">
+            <div class="profile-info">
+                <img id="profileImage" src="" alt="Profile Image">
+                <div class="profile-details">
+                    <h3 id="profileName"></h3>
+                    <p id="profileUsername"></p>
+                </div>
+            </div>
+            <div class="analysis-results">
+                <div class="result-item">
+                    <span>Profile Authenticity:</span>
+                    <span id="authenticityScore"></span>
+                </div>
+                <div class="result-item">
+                    <span>Risk Level:</span>
+                    <span id="riskLevel"></span>
+                </div>
+                <div class="result-item">
+                    <span>Account Age:</span>
+                    <span id="accountAge"></span>
+                </div>
+                <div class="result-item">
+                    <span>Security Score:</span>
+                    <span id="securityScore"></span>
+                </div>
+                <div class="result-item">
+                    <span>Activity Score:</span>
+                    <span id="activityScore"></span>
+                </div>
+            </div>
+            <div class="detailed-analysis">
+                <h4>Detailed Analysis</h4>
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <h5>Profile Picture Analysis</h5>
+                        <ul id="profilePictureAnalysis"></ul>
+                    </div>
+                    <div class="analysis-item">
+                        <h5>Account Activity</h5>
+                        <ul id="accountActivityAnalysis"></ul>
+                    </div>
+                    <div class="analysis-item">
+                        <h5>Followers Analysis</h5>
+                        <ul id="followersAnalysis"></ul>
+                    </div>
+                    <div class="analysis-item">
+                        <h5>Content Analysis</h5>
+                        <ul id="contentAnalysis"></ul>
+                    </div>
+                    <div class="analysis-item">
+                        <h5>Security Analysis</h5>
+                        <ul id="securityAnalysis"></ul>
+                    </div>
+                    <div class="analysis-item">
+                        <h5>Location Analysis</h5>
+                        <ul id="locationAnalysis"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="recommendations">
+                <h4>Recommendations</h4>
+                <ul id="recommendationsList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 ProfileGuard. All rights reserved.</p>
+    </footer>
+
+    <!-- Sign In Modal -->
+    <div id="signInModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Sign In</h2>
+            <form id="signInForm">
+                <div class="form-group">
+                    <input type="email" id="signInEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signInPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+                <div class="social-login">
+                    <p>Or sign in with</p>
+                    <div class="social-buttons">
+                        <div id="g_id_onload"
+                             data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                             data-context="signin"
+                             data-ux_mode="popup"
+                             data-callback="handleGoogleSignIn"
+                             data-auto_prompt="false">
+                        </div>
+                        <button type="button" class="facebook-btn">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signUpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signUpForm">
+                <div class="form-group">
+                    <input type="text" id="signUpName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signUpEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signUpPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+                <div class="social-login">
+                    <p>Or sign up with</p>
+                    <div class="social-buttons">
+                        <div id="g_id_onload_signup"
+                             data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                             data-context="signup"
+                             data-ux_mode="popup"
+                             data-callback="handleGoogleSignUp"
+                             data-auto_prompt="false">
+                        </div>
+                        <button type="button" class="facebook-btn">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html> 
